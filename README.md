@@ -20,6 +20,16 @@ A beautiful Flutter habit tracking app that motivates users through creative, an
 - **📱 Responsive Design**: Works seamlessly on different screen sizes
 
 ## 📱 Screenshots
+<img width="1344" height="2992" alt="screenshot" src="https://github.com/user-attachments/assets/6424d052-015f-4eaa-b327-60c5e013a4fe" />
+
+
+<img width="1344" height="2992" alt="screenshot" src="https://github.com/user-attachments/assets/1717a4a7-305d-403c-8a27-e44be451a72a" />
+
+<img width="1344" height="2992" alt="screenshot" src="https://github.com/user-attachments/assets/f1ddbfa0-e001-4aa5-a524-9fd756b070b1" />
+
+<img width="1344" height="2992" alt="screenshot" src="https://github.com/user-attachments/assets/2093aacb-3a7f-4d13-84f7-793d97964876" />
+
+<img width="1344" height="2992" alt="screenshot" src="https://github.com/user-attachments/assets/597a500c-62a6-4f7e-81de-bd297f5d5e66" />
 
 > Add screenshots here to showcase your app's UI
 
