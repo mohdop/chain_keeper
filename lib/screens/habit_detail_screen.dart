@@ -6,6 +6,7 @@ import '../providers/habit_provider.dart';
 import '../widgets/visualizations/garden_visual.dart';
 import '../widgets/visualizations/bridge_visual.dart';
 import '../widgets/visualizations/constellation_visual.dart';
+import '../widgets/habit_calendar.dart';
 
 class HabitDetailScreen extends StatelessWidget {
   final Habit habit;
@@ -191,6 +192,11 @@ class HabitDetailScreen extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 30),
+
+                  // CALENDRIER ICI ← La bonne position !
+                  HabitCalendar(habit: habit),
+
+                  const SizedBox(height: 30),
                 ],
               ),
             ),
@@ -338,8 +344,8 @@ class HabitDetailScreen extends StatelessWidget {
             onPressed: () {
               Provider.of<HabitProvider>(context, listen: false)
                   .deleteHabit(habit.id);
-              Navigator.pop(context); // Fermer le dialogue
-              Navigator.pop(context); // Retourner à l'écran d'accueil
+              Navigator.pop(context);
+              Navigator.pop(context);
             },
             child: const Text(
               'Supprimer',
