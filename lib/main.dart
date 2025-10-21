@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/date_symbol_data_local.dart';  // ← Important
 import 'providers/habit_provider.dart';
 import 'screens/home_screen.dart';
 import 'services/notification_service.dart';
@@ -8,7 +8,7 @@ import 'services/notification_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Initialiser les locales pour le français
+  // Initialiser les locales pour le français ← TRÈS IMPORTANT
   await initializeDateFormatting('fr_FR', null);
   
   // Initialiser les notifications

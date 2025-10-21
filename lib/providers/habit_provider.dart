@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import '../models/habit.dart';
 import '../services/database_service.dart';
 import '../services/notification_service.dart';
+import '../services/achievement_service.dart';
+import '../models/achievement.dart';
 
 class HabitProvider with ChangeNotifier {
   final NotificationService _notificationService = NotificationService();
-  List<Habit> _habits = [];
+  final AchievementService _achievementService = AchievementService();
   final DatabaseService _dbService = DatabaseService();
+  
+  List<Habit> _habits = [];
+  List<Achievement> _achievements = [];
   bool _isLoading = false;
 
   List<Habit> get habits => _habits;
+  List<Achievement> get achievements => _achievements;
   bool get isLoading => _isLoading;
 
   // Charger les habits au démarrage
@@ -18,6 +24,7 @@ class HabitProvider with ChangeNotifier {
     notifyListeners();
     
     _habits = await _dbService.loadHabits();
+    _achievements = await _achievementService.loadAchievements();
     
     _isLoading = false;
     notifyListeners();
@@ -25,17 +32,20 @@ class HabitProvider with ChangeNotifier {
 
   // Ajouter un habit
   Future<void> addHabit(Habit habit) async {
-  _habits.add(habit);
-  await _dbService.saveHabit(habit);
-  
-  // Planifier la notification
-  await _notificationService.scheduleHabitReminder(habit);
-  
-  notifyListeners();
-}
+    _habits.add(habit);
+    await _dbService.saveHabit(habit);
+    
+    // Planifier la notification
+    await _notificationService.scheduleHabitReminder(habit);
+    
+    notifyListeners();
+    
+    // Vérifier les achievements (pour Collector, MultiTasker)
+    await _checkAchievements();
+  }
 
   // Compléter un habit
-  Future<void> completeHabit(String habitId) async {
+  Future<List<Achievement>?> completeHabit(String habitId) async {
     final habit = _habits.firstWhere((h) => h.id == habitId);
     
     DateTime today = DateTime.now();
@@ -46,7 +56,7 @@ class HabitProvider with ChangeNotifier {
         lastCompleted.year == today.year && 
         lastCompleted.month == today.month && 
         lastCompleted.day == today.day) {
-      return; // Déjà fait aujourd'hui
+      return null; // Déjà fait aujourd'hui
     }
     
     if (lastCompleted != null) {
@@ -74,32 +84,47 @@ class HabitProvider with ChangeNotifier {
     
     await _dbService.saveHabit(habit);
     notifyListeners();
+    
+    // Vérifier les achievements
+    final newAchievements = await _achievementService.checkAndUnlockAchievements(
+      _achievements,
+      _habits,
+    );
+    
+    if (newAchievements.isNotEmpty) {
+      _achievements = await _achievementService.loadAchievements();
+      notifyListeners();
+      return newAchievements;
+    }
+    
+    return null;
   }
 
   // Supprimer un habit
   Future<void> deleteHabit(String habitId) async {
-  _habits.removeWhere((h) => h.id == habitId);
-  await _dbService.deleteHabit(habitId);
-  
-  // Annuler la notification
-  await _notificationService.cancelHabitReminder(habitId);
-  
-  notifyListeners();
-}
-// Mettre à jour un habit
-Future<void> updateHabit(Habit habit) async {
-  final index = _habits.indexWhere((h) => h.id == habit.id);
-  if (index != -1) {
-    _habits[index] = habit;
-    await _dbService.saveHabit(habit);
+    _habits.removeWhere((h) => h.id == habitId);
+    await _dbService.deleteHabit(habitId);
     
-    // Reprogrammer la notification avec la nouvelle heure
-    await _notificationService.cancelHabitReminder(habit.id);
-    await _notificationService.scheduleHabitReminder(habit);
+    // Annuler la notification
+    await _notificationService.cancelHabitReminder(habitId);
     
     notifyListeners();
   }
-}
+
+  // Mettre à jour un habit
+  Future<void> updateHabit(Habit habit) async {
+    final index = _habits.indexWhere((h) => h.id == habit.id);
+    if (index != -1) {
+      _habits[index] = habit;
+      await _dbService.saveHabit(habit);
+      
+      // Reprogrammer la notification avec la nouvelle heure
+      await _notificationService.cancelHabitReminder(habit.id);
+      await _notificationService.scheduleHabitReminder(habit);
+      
+      notifyListeners();
+    }
+  }
 
   // Vérifier si un habit est complété aujourd'hui
   bool isCompletedToday(Habit habit) {
@@ -111,5 +136,18 @@ Future<void> updateHabit(Habit habit) async {
     return lastCompleted.year == today.year &&
            lastCompleted.month == today.month &&
            lastCompleted.day == today.day;
+  }
+
+  // Vérifier les achievements (méthode privée)
+  Future<void> _checkAchievements() async {
+    final newAchievements = await _achievementService.checkAndUnlockAchievements(
+      _achievements,
+      _habits,
+    );
+    
+    if (newAchievements.isNotEmpty) {
+      _achievements = await _achievementService.loadAchievements();
+      notifyListeners();
+    }
   }
 }

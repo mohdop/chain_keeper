@@ -1,3 +1,4 @@
+import 'package:chain_keeper/widgets/achievements_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/habit_provider.dart';
@@ -11,17 +12,21 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Chain Keeper',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+    title: const Text('Chain Keeper'),
+    actions: [
+      IconButton(
+        icon: const Icon(Icons.emoji_events),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AchievementsScreen(),
+            ),
+          );
+        },
       ),
+    ],
+  ),
       body: Consumer<HabitProvider>(
         builder: (context, habitProvider, child) {
           if (habitProvider.isLoading) {

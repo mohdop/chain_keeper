@@ -9,6 +9,7 @@ import '../widgets/visualizations/constellation_visual.dart';
 import '../widgets/habit_calendar.dart';
 import '../widgets/habit_progress_chart.dart';
 import 'edit_habit_screen.dart';
+import '../widgets/achievement_popup.dart';
 
 class HabitDetailScreen extends StatelessWidget {
   final Habit habit;
@@ -71,44 +72,55 @@ class HabitDetailScreen extends StatelessWidget {
             ),
 
             // Bouton de complétion
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: SizedBox(
-                width: double.infinity,
-                height: 60,
-                child: ElevatedButton(
-                  onPressed: isCompletedToday
-                      ? null
-                      : () => habitProvider.completeHabit(habit.id),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isCompletedToday
-                        ? const Color(0xFF00D9A5)
-                        : const Color(0xFF6C63FF),
-                    disabledBackgroundColor: const Color(0xFF00D9A5),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        isCompletedToday ? Icons.check_circle : Icons.check_circle_outline,
-                        size: 28,
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        isCompletedToday ? 'Complété aujourd\'hui !' : 'Marquer comme fait',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+           // Bouton de complétion
+Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 20),
+  child: SizedBox(
+    width: double.infinity,
+    height: 60,
+    child: ElevatedButton(
+      onPressed: isCompletedToday
+          ? null
+          : () async {  // ← Ajoute async ici
+              final newAchievements = await habitProvider.completeHabit(habit.id);  // ← Modifie cette ligne
+              
+              // Afficher les popups d'achievements
+              if (newAchievements != null && newAchievements.isNotEmpty) {
+                for (final achievement in newAchievements) {
+                  AchievementPopup.show(context, achievement);
+                  await Future.delayed(const Duration(milliseconds: 800));
+                }
+              }
+            },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: isCompletedToday
+            ? const Color(0xFF00D9A5)
+            : const Color(0xFF6C63FF),
+        disabledBackgroundColor: const Color(0xFF00D9A5),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            isCompletedToday ? Icons.check_circle : Icons.check_circle_outline,
+            size: 28,
+          ),
+          const SizedBox(width: 10),
+          Text(
+            isCompletedToday ? 'Complété aujourd\'hui !' : 'Marquer comme fait',
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
+          ),
+        ],
+      ),
+    ),
+  ),
+),
 
             const SizedBox(height: 30),
 

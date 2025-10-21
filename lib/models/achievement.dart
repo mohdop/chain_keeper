@@ -1,70 +1,76 @@
-// models/achievement.dart
+import 'package:chain_keeper/services/achievement_service.dart';
 import 'package:flutter/material.dart';
 
-enum AchievementType {
-  firstStep,        // Premier jour complété
-  weekWarrior,      // 7 jours de suite
-  monthMaster,      // 30 jours de suite
-  centurion,        // 100 jours de suite
-  dedicated,        // 365 jours de suite
-  multiTasker,      // 3 habitudes actives
-  collector,        // 5 habitudes créées
-  perfectWeek,      // Toutes les habitudes complétées pendant 7 jours
-  comeback,         // Repris après une pause
-  earlyBird,        // Complété avant 8h du matin
-}
-
 class Achievement {
-  final AchievementType type;
+  final String id;
   final String title;
   final String description;
+  final int requiredDays;
   final IconData icon;
   final Color color;
-  final int targetValue;
+  final bool isUnlocked;
   final DateTime? unlockedAt;
 
   Achievement({
-    required this.type,
+    required this.id,
     required this.title,
     required this.description,
+    required this.requiredDays,
     required this.icon,
     required this.color,
-    required this.targetValue,
+    this.isUnlocked = false,
     this.unlockedAt,
   });
 
-  bool get isUnlocked => unlockedAt != null;
+  Achievement copyWith({
+    String? id,
+    String? title,
+    String? description,
+    int? requiredDays,
+    IconData? icon,
+    Color? color,
+    bool? isUnlocked,
+    DateTime? unlockedAt,
+  }) {
+    return Achievement(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      requiredDays: requiredDays ?? this.requiredDays,
+      icon: icon ?? this.icon,
+      color: color ?? this.color,
+      isUnlocked: isUnlocked ?? this.isUnlocked,
+      unlockedAt: unlockedAt ?? this.unlockedAt,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
-      'type': type.toString(),
+      'id': id,
+      'title': title,
+      'description': description,
+      'requiredDays': requiredDays,
+      'isUnlocked': isUnlocked,
       'unlockedAt': unlockedAt?.toIso8601String(),
     };
   }
 
-  factory Achievement.fromJson(Map<String, dynamic> json, Achievement template) {
+  factory Achievement.fromJson(Map<String, dynamic> json) {
+    // Get the default achievement to retrieve icon and color
+    final defaultAchievement = AchievementService.defaultAchievements
+        .firstWhere((a) => a.id == json['id']);
+    
     return Achievement(
-      type: template.type,
-      title: template.title,
-      description: template.description,
-      icon: template.icon,
-      color: template.color,
-      targetValue: template.targetValue,
-      unlockedAt: json['unlockedAt'] != null 
-          ? DateTime.parse(json['unlockedAt']) 
+      id: json['id'],
+      title: json['title'],
+      description: json['description'],
+      requiredDays: json['requiredDays'],
+      icon: defaultAchievement.icon,
+      color: defaultAchievement.color,
+      isUnlocked: json['isUnlocked'] ?? false,
+      unlockedAt: json['unlockedAt'] != null
+          ? DateTime.parse(json['unlockedAt'])
           : null,
-    );
-  }
-
-  Achievement copyWith({DateTime? unlockedAt}) {
-    return Achievement(
-      type: type,
-      title: title,
-      description: description,
-      icon: icon,
-      color: color,
-      targetValue: targetValue,
-      unlockedAt: unlockedAt ?? this.unlockedAt,
     );
   }
 }
