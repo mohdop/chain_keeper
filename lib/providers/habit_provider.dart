@@ -86,6 +86,20 @@ class HabitProvider with ChangeNotifier {
   
   notifyListeners();
 }
+// Mettre à jour un habit
+Future<void> updateHabit(Habit habit) async {
+  final index = _habits.indexWhere((h) => h.id == habit.id);
+  if (index != -1) {
+    _habits[index] = habit;
+    await _dbService.saveHabit(habit);
+    
+    // Reprogrammer la notification avec la nouvelle heure
+    await _notificationService.cancelHabitReminder(habit.id);
+    await _notificationService.scheduleHabitReminder(habit);
+    
+    notifyListeners();
+  }
+}
 
   // Vérifier si un habit est complété aujourd'hui
   bool isCompletedToday(Habit habit) {

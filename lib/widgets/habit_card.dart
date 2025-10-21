@@ -31,7 +31,7 @@ class HabitCard extends StatelessWidget {
     case 'bridge':
       return BridgeVisual(streak: streak, size: 80);
     case 'constellation':
-      return ConstellationVisual(streak: streak, size: 80);
+      return ConstellationVisual(streak: streak,);
     default:
       return Center(
         child: Icon(

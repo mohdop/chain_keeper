@@ -7,6 +7,8 @@ import '../widgets/visualizations/garden_visual.dart';
 import '../widgets/visualizations/bridge_visual.dart';
 import '../widgets/visualizations/constellation_visual.dart';
 import '../widgets/habit_calendar.dart';
+import '../widgets/habit_progress_chart.dart';
+import 'edit_habit_screen.dart';
 
 class HabitDetailScreen extends StatelessWidget {
   final Habit habit;
@@ -20,16 +22,27 @@ class HabitDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(habit.name),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.delete_outline),
-            onPressed: () => _showDeleteDialog(context),
-          ),
-        ],
-      ),
+      title: Text(habit.name),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.edit_outlined),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EditHabitScreen(habit: habit),
+              ),
+            );
+          },
+        ),
+        IconButton(
+          icon: const Icon(Icons.delete_outline),
+          onPressed: () => _showDeleteDialog(context),
+        ),
+      ],
+    ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -197,6 +210,13 @@ class HabitDetailScreen extends StatelessWidget {
                   HabitCalendar(habit: habit),
 
                   const SizedBox(height: 30),
+
+                  const SizedBox(height: 30),
+
+                  // GRAPHIQUES DE PROGRESSION
+                  HabitProgressChart(habit: habit),
+
+                  const SizedBox(height: 30),
                 ],
               ),
             ),
@@ -213,7 +233,7 @@ class HabitDetailScreen extends StatelessWidget {
       case 'bridge':
         return BridgeVisual(streak: streak, size: 250);
       case 'constellation':
-        return ConstellationVisual(streak: streak, size: 250);
+        return ConstellationVisual(streak: streak);
       default:
         return const Icon(Icons.check_circle, size: 100);
     }
