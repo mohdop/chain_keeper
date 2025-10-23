@@ -1,4 +1,3 @@
-// screens/settings_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/theme_provider.dart';
@@ -8,156 +7,170 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    final isDark = themeProvider.isDarkMode;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Paramètres'),
+        title: const Text('Paramètres'),
       ),
       body: ListView(
-        padding: EdgeInsets.all(16),
         children: [
-          // Appearance Section
-          _buildSectionTitle(context, 'Apparence'),
-          Card(
-            child: SwitchListTile(
-              title: Text(
-                'Mode Sombre',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              subtitle: Text(
-                'Activer le thème sombre',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              secondary: Icon(
-                isDark ? Icons.dark_mode : Icons.light_mode,
+          const SizedBox(height: 20),
+          
+          // Section Apparence
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Text(
+              'APPARENCE',
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.primary,
               ),
-              value: isDark,
-              onChanged: (value) {
-                themeProvider.toggleTheme();
-              },
-              activeColor: Theme.of(context).colorScheme.primary,
             ),
           ),
           
-          SizedBox(height: 24),
-          
-          // About Section
-          _buildSectionTitle(context, 'À propos'),
-          Card(
-            child: Column(
-              children: [
-                ListTile(
-                  leading: Icon(
-                    Icons.info_outline,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  title: Text(
-                    'Version',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  subtitle: Text(
-                    '1.0.0',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ),
-                Divider(height: 1),
-                ListTile(
-                  leading: Icon(
-                    Icons.code,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  title: Text(
-                    'Développé par',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  subtitle: Text(
-                    'Mohamed',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ),
-                Divider(height: 1),
-                ListTile(
-                  leading: Icon(
-                    Icons.flutter_dash,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  title: Text(
-                    'Créé avec Flutter',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  subtitle: Text(
-                    'Cross-platform mobile app',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          
-          SizedBox(height: 24),
-          
-          // Theme Preview
-          _buildSectionTitle(context, 'Aperçu du thème'),
-          Card(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          // Sélecteur de thème
+          Consumer<ThemeProvider>(
+            builder: (context, themeProvider, child) {
+              return Column(
                 children: [
-                  Text(
-                    'Exemple de texte',
-                    style: Theme.of(context).textTheme.headlineMedium,
+                  _ThemeTile(
+                    title: 'Thème clair',
+                    subtitle: 'Interface lumineuse et claire',
+                    icon: Icons.light_mode,
+                    isSelected: themeProvider.themeMode == AppThemeMode.light,
+                    onTap: () {
+                      themeProvider.setThemeMode(AppThemeMode.light);
+                    },
                   ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Ceci est un exemple de texte dans le thème ${isDark ? "sombre" : "clair"}. Les couleurs s\'adaptent automatiquement.',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                  _ThemeTile(
+                    title: 'Thème sombre',
+                    subtitle: 'Interface sombre et reposante',
+                    icon: Icons.dark_mode,
+                    isSelected: themeProvider.themeMode == AppThemeMode.dark,
+                    onTap: () {
+                      themeProvider.setThemeMode(AppThemeMode.dark);
+                    },
                   ),
-                  SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: Text('Bouton'),
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                          child: Text('Bouton'),
-                        ),
-                      ),
-                    ],
+                  _ThemeTile(
+                    title: 'Système',
+                    subtitle: 'Suit les paramètres du système',
+                    icon: Icons.brightness_auto,
+                    isSelected: themeProvider.themeMode == AppThemeMode.system,
+                    onTap: () {
+                      themeProvider.setThemeMode(AppThemeMode.system);
+                    },
                   ),
                 ],
+              );
+            },
+          ),
+          
+          const SizedBox(height: 20),
+          
+          // Section À propos
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Text(
+              'À PROPOS',
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
+          ),
+          
+          ListTile(
+            leading: const Icon(Icons.info_outline),
+            title: const Text('Version'),
+            subtitle: const Text('1.0.0'),
+            onTap: () {},
+          ),
+          
+          ListTile(
+            leading: const Icon(Icons.code),
+            title: const Text('Code source'),
+            subtitle: const Text('Voir sur GitHub'),
+            trailing: const Icon(Icons.open_in_new, size: 20),
+            onTap: () {
+              // Ouvrir le lien GitHub
+            },
+          ),
+          
+          ListTile(
+            leading: const Icon(Icons.favorite_outline),
+            title: const Text('Développé avec ❤️'),
+            subtitle: const Text('Par Mohamed'),
+            onTap: () {},
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildSectionTitle(BuildContext context, String title) {
-    return Padding(
-      padding: EdgeInsets.only(left: 8, bottom: 8, top: 8),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-          color: Theme.of(context).colorScheme.primary,
+class _ThemeTile extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _ThemeTile({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      elevation: isSelected ? 4 : 1,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: isSelected 
+              ? Theme.of(context).colorScheme.primary
+              : Colors.transparent,
+          width: 2,
         ),
+      ),
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        leading: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: isSelected 
+                ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
+                : Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            icon,
+            color: isSelected 
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).iconTheme.color,
+            size: 28,
+          ),
+        ),
+        title: Text(
+          title,
+          style: TextStyle(
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            color: isSelected 
+                ? Theme.of(context).colorScheme.primary
+                : null,
+          ),
+        ),
+        subtitle: Text(subtitle),
+        trailing: isSelected 
+            ? Icon(
+                Icons.check_circle,
+                color: Theme.of(context).colorScheme.primary,
+              )
+            : null,
+        onTap: onTap,
       ),
     );
   }
