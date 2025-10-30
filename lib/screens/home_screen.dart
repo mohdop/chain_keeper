@@ -17,10 +17,10 @@ class HomeScreen extends StatelessWidget {
       centerTitle: true,
       actions: [
          IconButton(
-    icon: const Icon(Icons.emoji_events_outlined), // 🏆 Achievements
-    onPressed: () {
-      Navigator.push(
-        context,
+        icon: const Icon(Icons.emoji_events_outlined), // 🏆 Achievements
+        onPressed: () {
+          Navigator.push(
+            context,
         MaterialPageRoute(
           builder: (context) => const AchievementsScreen(),
         ),
@@ -104,7 +104,8 @@ class HomeScreen extends StatelessWidget {
             ),
           );
         },
-        backgroundColor: const Color(0xFF6C63FF),
+        backgroundColor: const Color.fromARGB(255, 46, 42, 70),
+        foregroundColor: const Color.fromARGB(255, 237, 236, 243),
         child: const Icon(Icons.add, size: 32),
       ),
     );

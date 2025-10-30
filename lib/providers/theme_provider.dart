@@ -54,38 +54,25 @@ class ThemeProvider with ChangeNotifier {
 
   // -------------------- DARK THEME (UNCHANGED AESTHETIC) --------------------
   static ThemeData get darkTheme {
-    return ThemeData(
-      useMaterial3: true,
-      brightness: Brightness.dark,
-      colorScheme: const ColorScheme.dark(
-        primary: Color(0xFF66BB6A),
-        secondary: Color(0xFFFF6B9D),
-        surface: Color(0xFF1E1E1E),
-        background: Color(0xFF121212),
-        error: Color(0xFFCF6679),
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onSurface: Colors.white,
-        onBackground: Colors.white,
-      ),
-      scaffoldBackgroundColor: const Color(0xFF121212),
-      cardColor: const Color(0xFF1E1E1E),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xFF1E1E1E),
-        elevation: 0,
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
-        titleTextStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: Color(0xFF66BB6A),
-        foregroundColor: Colors.white,
-      ),
-    );
+    return ThemeData.dark().copyWith(
+    primaryColor: const Color(0xFFD7C6FF), // Purple instead of green
+    colorScheme: const ColorScheme.dark(
+      primary: Color(0xFFD7C6FF), // Material Purple
+      secondary: Color(0xFFD7C6FF), // Light Purple
+      tertiary: Color.fromARGB(255, 197, 172, 255), // Deep Purple
+      surface: Color(0xFF1E1E1E),
+      background: Color(0xFF121212),
+    ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color(0xFF1E1E1E),
+      foregroundColor: Color(0xFFD7C6FF),
+    ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: Color(0xFFD7C6FF),
+      foregroundColor: Colors.white,
+    ),
+  );
+
   }
 
   // -------------------- NEW LIGHT THEME (PASTEL LAVENDER + OFFWHITE) --------------------

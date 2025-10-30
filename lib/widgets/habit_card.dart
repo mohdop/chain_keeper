@@ -73,16 +73,18 @@ class HabitCard extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(
-          color: const Color(0xFF2A2A3E),
+          color:Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
+            if (Theme.of(context).brightness == Brightness.light)
+              BoxShadow(
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+                color: Colors.black.withOpacity(0.08), // very soft shadow, light mode only
+              ),
           ],
         ),
+
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Row(
@@ -105,24 +107,23 @@ class HabitCard extends StatelessWidget {
               // Nom et streak
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       habit.name,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),),
+
                     const SizedBox(height: 4),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
                           Icons.local_fire_department,
                           color: habit.currentStreak > 0 
                               ? const Color(0xFFFF6B9D) 
-                              : Colors.grey,
+                              : const Color.fromARGB(255, 70, 70, 70),
                           size: 16,
                         ),
                         const SizedBox(width: 4),
@@ -130,7 +131,7 @@ class HabitCard extends StatelessWidget {
                           '${habit.currentStreak} jours',
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.grey[400],
+                            color: const Color.fromARGB(255, 70, 70, 70),
                           ),
                         ),
                       ],
@@ -149,7 +150,7 @@ class HabitCard extends StatelessWidget {
                   height: 50,
                   decoration: BoxDecoration(
                     color: isCompletedToday 
-                        ? const Color(0xFF00D9A5) 
+                        ? const Color.fromARGB(255, 46, 42, 70) 
                         : Colors.grey[800],
                     shape: BoxShape.circle,
                   ),

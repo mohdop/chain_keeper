@@ -17,145 +17,128 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final surface = Theme.of(context).colorScheme.surface;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nouvelle habitude'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Nom de l\'habitude',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _nameController,
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                hintText: 'Ex: Faire du sport',
-                hintStyle: TextStyle(color: Colors.grey[600]),
-                filled: true,
-                fillColor: const Color(0xFF2A2A3E),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-            const SizedBox(height: 30),
-            const Text(
-              'Thème visuel',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildVisualTypeButton('garden', Icons.local_florist, 'Jardin'),
-                _buildVisualTypeButton('bridge', Icons.architecture, 'Pont'),
-                _buildVisualTypeButton('constellation', Icons.auto_awesome, 'Étoiles'),
-              ],
-            ),
-            const SizedBox(height: 30),
-            const Text(
-              'Heure de rappel',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            GestureDetector(
-              onTap: _selectTime,
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2A2A3E),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Row(
+      body: SafeArea(
+        child: SingleChildScrollView(
+        
+          
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.access_time, color: Color(0xFF6C63FF)),
-                    const SizedBox(width: 15),
-                    Text(
-                      '${_reminderTime.hour.toString().padLeft(2, '0')}:${_reminderTime.minute.toString().padLeft(2, '0')}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                    const Text(
+                      'Nom de l\'habitude',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: _nameController,
+                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                      decoration: InputDecoration(
+                        hintText: 'Ex: Faire du sport',
+                        hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4)),
+                        filled: true,
+                        fillColor: surface,
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    const Text('Thème visuel', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildVisualTypeButton(isDark, surface, 'garden', Icons.local_florist, 'Jardin'),
+                        _buildVisualTypeButton(isDark, surface, 'bridge', Icons.architecture, 'Pont'),
+                        _buildVisualTypeButton(isDark, surface, 'constellation', Icons.auto_awesome, 'Étoiles'),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    const Text('Heure de rappel', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 10),
+                    GestureDetector(
+                      onTap: _selectTime,
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: surface,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2)),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.access_time, color: Color(0xFF6C63FF)),
+                            const SizedBox(width: 15),
+                            Text(
+                              '${_reminderTime.hour.toString().padLeft(2, '0')}:${_reminderTime.minute.toString().padLeft(2, '0')}',
+                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            const Spacer(),
+                            const Icon(Icons.arrow_forward_ios, size: 16),
+                          ],
+                        ),
                       ),
                     ),
                     const Spacer(),
-                    const Icon(Icons.arrow_forward_ios, size: 16),
+                    Padding(
+                      padding:  EdgeInsets.only(top: MediaQuery.heightOf(context)* .32),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 55,
+                        child: ElevatedButton(
+                          onPressed: _saveHabit,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF6C63FF),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                          ),
+                          child: const Text('Créer', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-            const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              height: 55,
-              child: ElevatedButton(
-                onPressed: _saveHabit,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF6C63FF),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                child: const Text(
-                  'Créer',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+      
     );
   }
 
-  Widget _buildVisualTypeButton(String type, IconData icon, String label) {
+  Widget _buildVisualTypeButton(bool isDark, Color surface, String type, IconData icon, String label) {
     final isSelected = _selectedVisualType == type;
+
     return GestureDetector(
       onTap: () => setState(() => _selectedVisualType = type),
       child: Container(
         width: 100,
         height: 100,
         decoration: BoxDecoration(
-          color: isSelected 
-              ? const Color(0xFF6C63FF).withOpacity(0.3) 
-              : const Color(0xFF2A2A3E),
+          color: isSelected ? const Color(0xFF6C63FF).withOpacity(0.2) : surface,
           borderRadius: BorderRadius.circular(15),
           border: Border.all(
-            color: isSelected 
-                ? const Color(0xFF6C63FF) 
-                : Colors.transparent,
+            color: isSelected
+                ? const Color(0xFF6C63FF)
+                : Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
             width: 2,
           ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 40, color: Colors.white),
+            Icon(icon, size: 40, color: Theme.of(context).colorScheme.onSurface),
             const SizedBox(height: 8),
-            Text(
-              label,
-              style: const TextStyle(fontSize: 12),
-            ),
+            Text(label, style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurface)),
           ],
         ),
       ),
@@ -166,25 +149,10 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: _reminderTime,
-      builder: (context, child) {
-        return Theme(
-          data: ThemeData.dark().copyWith(
-            colorScheme: const ColorScheme.dark(
-              primary: Color(0xFF6C63FF),
-              onPrimary: Colors.white,
-              surface: Color(0xFF2A2A3E),
-              onSurface: Colors.white,
-            ),
-          ),
-          child: child!,
-        );
-      },
     );
 
     if (picked != null && picked != _reminderTime) {
-      setState(() {
-        _reminderTime = picked;
-      });
+      setState(() => _reminderTime = picked);
     }
   }
 

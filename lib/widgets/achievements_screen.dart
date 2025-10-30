@@ -49,7 +49,7 @@ class AchievementsScreen extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: achievements.length,
                     itemBuilder: (context, index) {
-                      return _buildAchievementCard(achievements[index]);
+                      return _buildAchievementCard(achievements[index],context);
                     },
                   ),
                 ],
@@ -143,15 +143,22 @@ class AchievementsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAchievementCard(Achievement achievement) {
+  Widget _buildAchievementCard(Achievement achievement, BuildContext context) {
     final isUnlocked = achievement.isUnlocked;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFF2A2A3E),
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
+        boxShadow:[if (Theme.of(context).brightness == Brightness.light)
+              BoxShadow(
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+                color: Colors.black.withOpacity(0.08), // very soft shadow, light mode only
+              ),],
+         
         border: isUnlocked
             ? Border.all(
                 color: achievement.color.withOpacity(0.5),
@@ -193,7 +200,7 @@ class AchievementsScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: isUnlocked ? Colors.white : Colors.grey[600],
+                          color: isUnlocked ? achievement.color : Colors.grey[600],
                         ),
                       ),
                     ),
@@ -223,7 +230,7 @@ class AchievementsScreen extends StatelessWidget {
                   achievement.description,
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.grey[400],
+                    color: const Color.fromARGB(255, 129, 129, 129),
                   ),
                 ),
                 if (isUnlocked && achievement.unlockedAt != null) ...[
@@ -231,6 +238,7 @@ class AchievementsScreen extends StatelessWidget {
                   Text(
                     'Débloqué le ${DateFormat('dd/MM/yyyy', 'fr_FR').format(achievement.unlockedAt!)}',
                     style: TextStyle(
+                      fontWeight: FontWeight.bold,
                       fontSize: 12,
                       color: achievement.color.withOpacity(0.8),
                       fontStyle: FontStyle.italic,
