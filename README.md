@@ -4,7 +4,6 @@ A beautiful Flutter habit tracking app that motivates users through creative, an
 
 ![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)
-![65ba74cf672937f3e95b4a67_65647732a03a5df1d2e45b2c_supabase](https://github.com/user-attachments/assets/9c4be81d-8486-476b-a3d9-7b8c0b407a08)
 
 ## ✨ Features
 
