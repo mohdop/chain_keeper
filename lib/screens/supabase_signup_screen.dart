@@ -83,12 +83,12 @@ class _SupabaseSignUpScreenState extends State<SupabaseSignUpScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 20),
-                    
-                    Icon(
-                      Icons.person_add_outlined,
-                      size: 80,
-                      color: theme.colorScheme.primary,
-                    ),
+                    Image(
+                      image: AssetImage("assets/icon/app icon nobg.png"),
+                      height:  MediaQuery.heightOf(context) *.15,
+                      width: MediaQuery.widthOf(context) *.15,
+                      ),
+                      
                     const SizedBox(height: 16),
                     
                     Text(

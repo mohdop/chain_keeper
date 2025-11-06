@@ -23,13 +23,22 @@ dependencies:
   font_awesome_flutter: ^10.11.0
   supabase_flutter: ^2.10.3
   flutter_dotenv: ^6.0.0
+  google_fonts: ^6.3.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
 
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/chain keeper icon.png"
+  adaptive_icon_background: "#1E1E2E"
+  adaptive_icon_foreground: "assets/icon/chain keeper icon.png"
+
 flutter:
   uses-material-design: true
   assets:
     - .env
+    - "assets/icon/"

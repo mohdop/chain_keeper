@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum AppThemeMode {
@@ -56,6 +57,9 @@ class ThemeProvider with ChangeNotifier {
   static ThemeData get darkTheme {
     return ThemeData.dark().copyWith(
     primaryColor: const Color(0xFFD7C6FF), // Purple instead of green
+    textTheme: GoogleFonts.poppinsTextTheme(
+    ThemeData.dark().textTheme,
+    ),
     colorScheme: const ColorScheme.dark(
       primary: Color(0xFFD7C6FF), // Material Purple
       secondary: Color(0xFFD7C6FF), // Light Purple
@@ -80,6 +84,9 @@ class ThemeProvider with ChangeNotifier {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
+      textTheme: GoogleFonts.poppinsTextTheme(
+      ThemeData.light().textTheme,
+      ),
       colorScheme: const ColorScheme.light(
         primary: _lavender,
         secondary: _lavender,

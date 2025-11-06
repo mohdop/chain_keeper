@@ -63,11 +63,15 @@ class _SupabaseLoginScreenState extends State<SupabaseLoginScreen> {
                     const SizedBox(height: 40),
                     
                     // App logo/icon
-                    Icon(
-                      Icons.link,
-                      size: 80,
-                      color: theme.colorScheme.primary,
-                    ),
+                   // Icon(Icons.link,
+                     // size: 80,
+                      //color: theme.colorScheme.primary,
+                    //),
+                     Image(
+                      image: AssetImage("assets/icon/app icon nobg.png"),
+                      height:  MediaQuery.heightOf(context) *.15,
+                      width: MediaQuery.widthOf(context) *.15,
+                      ),
                     const SizedBox(height: 16),
                     
                     // Welcome text
