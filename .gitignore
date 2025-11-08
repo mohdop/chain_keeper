@@ -46,3 +46,4 @@ app.*.map.json
 
 
 .env
+build/app/outputs/bundle/release/app-release.aab

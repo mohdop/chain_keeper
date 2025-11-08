@@ -50,70 +50,191 @@ class ThemeProvider with ChangeNotifier {
     }
   }
 
-  static const Color _lavender = Color(0xFFD7C6FF); // pastel lavender
-  static const Color _offWhite = Color(0xFFFAFAFA); // apple-level offwhite
+  // -------------------- COULEURS DU LOGO --------------------
+  // Violet du logo
+  static const Color _primaryViolet = Color(0xFF8B5CF6);
+  // Rose/Magenta du logo
+  static const Color _secondaryPink = Color(0xFFEC4899);
+  // Bleu du logo
+  static const Color _tertiaryBlue = Color(0xFF2563EB);
+  // Fond ultra sombre
+  static const Color _darkBackground = Color(0xFF0F0F1E);
+  static const Color _darkSurface = Color(0xFF1A1A2E);
+  static const Color _darkCard = Color(0xFF1E2235);
+  
+  // Pour le light mode
+  static const Color _lightViolet = Color(0xFFA78BFA); // Violet plus clair
+  static const Color _offWhite = Color(0xFFFAFAFA);
 
-  // -------------------- DARK THEME (UNCHANGED AESTHETIC) --------------------
+  // -------------------- DARK THEME (NOUVEAU AVEC COULEURS DU LOGO) --------------------
   static ThemeData get darkTheme {
     return ThemeData.dark().copyWith(
-    primaryColor: const Color(0xFFD7C6FF), // Purple instead of green
-    textTheme: GoogleFonts.poppinsTextTheme(
-    ThemeData.dark().textTheme,
-    ),
-    colorScheme: const ColorScheme.dark(
-      primary: Color(0xFFD7C6FF), // Material Purple
-      secondary: Color(0xFFD7C6FF), // Light Purple
-      tertiary: Color.fromARGB(255, 197, 172, 255), // Deep Purple
-      surface: Color(0xFF1E1E1E),
-      background: Color(0xFF121212),
-    ),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFF1E1E1E),
-      foregroundColor: Color(0xFFD7C6FF),
-    ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: Color(0xFFD7C6FF),
-      foregroundColor: Colors.white,
-    ),
-  );
-
+      primaryColor: _primaryViolet,
+      scaffoldBackgroundColor: _darkBackground,
+      
+      textTheme: GoogleFonts.poppinsTextTheme(
+        ThemeData.dark().textTheme,
+      ),
+      
+      colorScheme: const ColorScheme.dark(
+        primary: _primaryViolet, // Violet principal
+        secondary: _secondaryPink, // Rose
+        tertiary: _tertiaryBlue, // Bleu
+        surface: _darkSurface,
+        background: _darkBackground,
+        error: Color(0xFFEF4444),
+        onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onSurface: Colors.white,
+        onBackground: Colors.white,
+      ),
+      
+      cardTheme: CardThemeData(
+        color: _darkCard,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+      
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        foregroundColor: Colors.white,
+        titleTextStyle: GoogleFonts.poppins(
+          color: Colors.white,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: _primaryViolet,
+        foregroundColor: Colors.white,
+        elevation: 4,
+      ),
+      
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: _primaryViolet,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+      ),
+      
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: _darkCard,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: _primaryViolet, width: 2),
+        ),
+      ),
+      
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: _primaryViolet,
+      ),
+      
+      dividerTheme: DividerThemeData(
+        color: Colors.white.withOpacity(0.1),
+        thickness: 1,
+      ),
+    );
   }
 
-  // -------------------- NEW LIGHT THEME (PASTEL LAVENDER + OFFWHITE) --------------------
+  // -------------------- LIGHT THEME (AVEC COULEURS DU LOGO ADAPTÉES) --------------------
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
+      primaryColor: _lightViolet,
+      scaffoldBackgroundColor: _offWhite,
+      
       textTheme: GoogleFonts.poppinsTextTheme(
-      ThemeData.light().textTheme,
+        ThemeData.light().textTheme,
       ),
-      colorScheme: const ColorScheme.light(
-        primary: _lavender,
-        secondary: _lavender,
-        surface: _offWhite,
+      
+      colorScheme: ColorScheme.light(
+        primary: _lightViolet,
+        secondary: _secondaryPink.withOpacity(0.7),
+        tertiary: _tertiaryBlue.withOpacity(0.7),
+        surface: Colors.white,
         background: _offWhite,
-        error: Color(0xFFB00020),
-        onPrimary: Colors.black,
-        onSecondary: Colors.black,
+        error: const Color(0xFFB00020),
+        onPrimary: Colors.white,
+        onSecondary: Colors.white,
         onSurface: Colors.black87,
         onBackground: Colors.black87,
       ),
-      scaffoldBackgroundColor: _offWhite,
-      cardColor: Colors.white,
-      appBarTheme: const AppBarTheme(
+      
+      cardTheme: CardThemeData(
+        color: Colors.white,
+        elevation: 2,
+        shadowColor: _lightViolet.withOpacity(0.1),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+      
+      appBarTheme: AppBarTheme(
         backgroundColor: _offWhite,
         elevation: 0,
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black87),
-        titleTextStyle: TextStyle(
+        iconTheme: const IconThemeData(color: Colors.black87),
+        titleTextStyle: GoogleFonts.poppins(
           color: Colors.black87,
-          fontSize: 20,
+          fontSize: 24,
           fontWeight: FontWeight.bold,
         ),
       ),
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: _lavender,
-        foregroundColor: Colors.black,
+      
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: _lightViolet,
+        foregroundColor: Colors.white,
+        elevation: 4,
+      ),
+      
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: _lightViolet,
+          foregroundColor: Colors.white,
+          elevation: 2,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+      ),
+      
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: Colors.grey[100],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: _lightViolet, width: 2),
+        ),
+      ),
+      
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: _lightViolet,
+      ),
+      
+      dividerTheme: DividerThemeData(
+        color: Colors.black.withOpacity(0.1),
+        thickness: 1,
       ),
     );
   }
